@@ -16,6 +16,7 @@
 // call方法原理模拟
 Function.prototype.call2 = function (context) {
   // 如果传入unll或者undefined，this指向window
+  // Object(context)是为了传递字符串和数字原始类型也可以创建方法
   context = Object(context) || window
   context.__fn__ = this
   var agrs = []
@@ -45,6 +46,26 @@ function foo (name, age) {
 
 let aa = foo.call2(bar, 'xiaofeng', 123)
 console.log('aa', aa)
+
+// apply原理模拟方法
+Function.prototype.apply2 = function (context, arr) {
+  context = Object(context) || window
+  context.__fn__ = this
+  var result
+  result = context.__fn__(...arr)    
+  delete context.__fn__
+  return result
+}
+
+var bar1 = {
+  name: 'xiaofeng'
+}
+function app (value, age) {
+  console.log(value, age)
+  console.log(this.name)
+}
+app.apply2(bar1, [1, 18]);
+
 </script>
 </body>
 </html>
