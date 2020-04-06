@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+* {
+  font-family: sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!--boot js--><script id="jsbin-javascript" defer>// console.clear()
+// call方法原理模拟
+Function.prototype.call2 = function (context) {
+  // 如果传入unll或者undefined，this指向window
+  context = Object(context) || window
+  context.__fn__ = this
+  var agrs = []
+  // 从1开始是因为第一位是指向
+  for (var i = 1; i < arguments.length; i++) {
+    agrs.push(arguments[i])
+  }
+  // 接受返回值
+  var result = context.__fn__(...agrs)
+  // 执行完删除方法
+  delete context.__fn__
+  return result
+}
+
+var bar = {
+  value: 1
+}
+function foo (name, age) {
+  console.log(name, age)
+  console.log(this.value)
+  return {
+    name,
+    age,
+    'this': this
+  }
+}
+
+let aa = foo.call2(bar, 'xiaofeng', 123)
+console.log('aa', aa)
+</script>
+</body>
+</html>
