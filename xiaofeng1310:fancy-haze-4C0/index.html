@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+* {
+  font-family: sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!--boot js--><script id="jsbin-javascript" defer>// console.clear()
+// bind的原理模拟
+Function.prototype.bind2 = function (context) {
+  // 如果bind不是一个函数，就就报错
+  if (typeof this !== 'function') {
+    throw new Error("Function.prototype.bind - what is trying to be bound is not callable")
+  }
+  var self = this
+  var args = Array.prototype.slice.call(arguments, 1)
+  var FNOP = function () {}
+  
+  var FBound = function () {
+    var bindArgs = Array.prototype.slice.call(arguments)
+    return self.apply(this instanceof FNOP ? this : context, args.concat(bindArgs))
+  }
+  fNOP.prototype = this.prototype;
+  fBound.prototype = new fNOP();
+  return fBound;
+}
+</script>
+</body>
+</html>
